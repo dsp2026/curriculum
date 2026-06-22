@@ -277,6 +277,94 @@
     }
     footer strong { color: rgba(255,255,255,0.85); }
 
+    /* 로드맵 섹션 */
+    .roadmap-dept { margin-bottom: 36px; }
+    .roadmap-dept-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--gray-800);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .roadmap-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      position: relative;
+      padding-left: 28px;
+    }
+    .roadmap-steps::before {
+      content: '';
+      position: absolute;
+      left: 10px;
+      top: 12px;
+      bottom: 12px;
+      width: 2px;
+      background: var(--gray-200);
+    }
+    .roadmap-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 12px 0;
+      position: relative;
+    }
+    .roadmap-dot {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--blue);
+      color: var(--white);
+      font-size: 10px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      position: absolute;
+      left: -28px;
+      top: 14px;
+      z-index: 1;
+    }
+    .roadmap-content {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 14px 18px;
+      flex: 1;
+      border-left: 3px solid var(--blue);
+    }
+    .roadmap-step-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--gray-800);
+      margin-bottom: 6px;
+    }
+    .roadmap-meta {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .roadmap-meta span {
+      font-size: 12px;
+      color: var(--gray-400);
+    }
+    .roadmap-meta span strong {
+      color: var(--gray-600);
+      font-weight: 500;
+    }
+    .roadmap-note {
+      margin-top: 6px;
+      font-size: 12px;
+      color: var(--blue);
+      background: var(--blue-light);
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 50px;
+    }
+
     @media (max-width: 600px) {
       .hero { padding: 48px 16px 44px; }
       .card-grid, .counsel-grid { grid-template-columns: 1fr; }
@@ -313,6 +401,18 @@
     <div class="section-heading">학과별 커리큘럼</div>
     <div id="update-curriculum" class="update-badge">불러오는 중...</div>
     <div id="curriculum-grid" class="card-grid">
+      <div class="loading">
+        <div class="loading-spinner"></div>
+        <div>데이터를 불러오는 중이에요...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 로드맵 섹션 -->
+  <div class="section">
+    <div class="section-title">ROADMAP</div>
+    <div class="section-heading">학과별 수강 로드맵</div>
+    <div id="roadmap-wrap">
       <div class="loading">
         <div class="loading-spinner"></div>
         <div>데이터를 불러오는 중이에요...</div>
@@ -364,6 +464,7 @@
 
   let allCurriculum = [];
   let allCounsel = [];
+  let allRoadmap = [];
 
   // 구글 시트 CSV로 불러오기
   async function fetchSheet(gid) {
@@ -474,6 +575,45 @@
     }).join('');
   }
 
+  // 로드맵 렌더링
+  function renderRoadmap(data) {
+    const wrap = document.getElementById('roadmap-wrap');
+    if (!data.length) {
+      wrap.innerHTML = `<div class="empty"><div class="empty-icon">🗺️</div>아직 등록된 로드맵이 없어요.</div>`;
+      return;
+    }
+    // 학과별로 그룹핑
+    const grouped = {};
+    data.forEach(row => {
+      const dept = row['학과명'] || '기타';
+      if (!grouped[dept]) grouped[dept] = [];
+      grouped[dept].push(row);
+    });
+
+    wrap.innerHTML = Object.entries(grouped).map(([dept, steps]) => {
+      const icon = DEPT_ICONS[dept] || '📚';
+      const color = DEPT_COLORS[dept] || '#1A56DB';
+      const stepsHtml = steps.map((step, i) => `
+        <div class="roadmap-step">
+          <div class="roadmap-dot" style="background:${color}">${i + 1}</div>
+          <div class="roadmap-content" style="border-left-color:${color}">
+            <div class="roadmap-step-name">${step['과정명'] || '-'}</div>
+            <div class="roadmap-meta">
+              ${step['기간'] ? `<span>기간 <strong>${step['기간']}</strong></span>` : ''}
+              ${step['선수과목'] ? `<span>선수과목 <strong>${step['선수과목']}</strong></span>` : ''}
+            </div>
+            ${step['비고'] ? `<div class="roadmap-note">${step['비고']}</div>` : ''}
+          </div>
+        </div>`).join('');
+
+      return `
+        <div class="roadmap-dept" data-dept="${dept}">
+          <div class="roadmap-dept-title">${icon} ${dept}</div>
+          <div class="roadmap-steps">${stepsHtml}</div>
+        </div>`;
+    }).join('');
+  }
+
   // 학과 필터
   function filterDept(dept) {
     document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -486,6 +626,9 @@
     document.querySelectorAll('#counsel-grid .counsel-card').forEach(card => {
       card.style.display = (dept === '전체' || card.dataset.dept === dept) ? 'block' : 'none';
     });
+    document.querySelectorAll('#roadmap-wrap .roadmap-dept').forEach(el => {
+      el.style.display = (dept === '전체' || el.dataset.dept === dept) ? 'block' : 'none';
+    });
   }
 
   // 최초 데이터 로드
@@ -493,13 +636,15 @@
     try {
       // gid=0 은 첫 번째 탭(커리큘럼), gid=1 두 번째 탭(강사정보), gid=2 세 번째 탭(상담자료)
       // 실제 gid는 시트 URL에서 확인 필요 — 기본값으로 0, 2 사용
-      const [curriculum, counsel] = await Promise.all([
+      const [curriculum, counsel, roadmap] = await Promise.all([
         fetchSheet(0),
         fetchSheet(2),
+        fetchSheet(2143955592),
       ]);
 
       allCurriculum = curriculum;
       allCounsel = counsel;
+      allRoadmap = roadmap;
 
       // 업데이트 일자
       const now = new Date();
@@ -508,11 +653,14 @@
 
       renderCurriculum(allCurriculum);
       renderCounsel(allCounsel);
+      renderRoadmap(allRoadmap);
 
     } catch (e) {
       document.getElementById('curriculum-grid').innerHTML =
         `<div class="empty"><div class="empty-icon">⚠️</div>데이터를 불러오지 못했어요.<br><small>구글 시트 공유 설정을 확인해주세요.</small></div>`;
       document.getElementById('counsel-grid').innerHTML =
+        `<div class="empty"><div class="empty-icon">⚠️</div>데이터를 불러오지 못했어요.</div>`;
+      document.getElementById('roadmap-wrap').innerHTML =
         `<div class="empty"><div class="empty-icon">⚠️</div>데이터를 불러오지 못했어요.</div>`;
     }
   }
