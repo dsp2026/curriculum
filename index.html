@@ -285,7 +285,18 @@
     }
     footer strong { color: rgba(255,255,255,0.85); }
 
-    /* 로드맵 섹션 */
+    /* 로드맵 이미지 */
+    .roadmap-img {
+      width: 100%;
+      border-radius: var(--radius);
+      margin-top: 10px;
+      object-fit: contain;
+      max-height: 400px;
+      background: var(--gray-100);
+    }
+    .roadmap-img-wrap {
+      margin-top: 10px;
+    }
     .roadmap-dept { margin-bottom: 36px; }
     .roadmap-dept-title {
       font-size: 16px;
@@ -404,12 +415,11 @@
 
 <main>
 
-  <!-- 커리큘럼 섹션 -->
-  <div class="section">
-    <div class="section-title">CURRICULUM</div>
-    <div class="section-heading">학과별 커리큘럼</div>
-    <div id="update-curriculum" class="update-badge">불러오는 중...</div>
-    <div id="curriculum-grid" class="card-grid">
+  <!-- 로드맵 섹션 -->
+  <div class="section" id="roadmap-section">
+    <div class="section-title">ROADMAP</div>
+    <div class="section-heading">학과별 수강 로드맵</div>
+    <div id="roadmap-wrap">
       <div class="loading">
         <div class="loading-spinner"></div>
         <div>데이터를 불러오는 중이에요...</div>
@@ -417,11 +427,12 @@
     </div>
   </div>
 
-  <!-- 로드맵 섹션 -->
-  <div class="section" id="roadmap-section">
-    <div class="section-title">ROADMAP</div>
-    <div class="section-heading">학과별 수강 로드맵</div>
-    <div id="roadmap-wrap">
+  <!-- 커리큘럼 섹션 -->
+  <div class="section">
+    <div class="section-title">CURRICULUM</div>
+    <div class="section-heading">학과별 커리큘럼</div>
+    <div id="update-curriculum" class="update-badge">불러오는 중...</div>
+    <div id="curriculum-grid" class="card-grid">
       <div class="loading">
         <div class="loading-spinner"></div>
         <div>데이터를 불러오는 중이에요...</div>
@@ -612,6 +623,10 @@
               ${step['선수과목'] ? `<span>선수과목 <strong>${step['선수과목']}</strong></span>` : ''}
             </div>
             ${step['비고'] ? `<div class="roadmap-note">${step['비고']}</div>` : ''}
+            ${step['이미지URL'] ? `
+            <div class="roadmap-img-wrap">
+              <img class="roadmap-img" src="${step['이미지URL']}" alt="${step['과정명'] || ''} 로드맵 이미지" onerror="this.style.display='none'">
+            </div>` : ''}
           </div>
         </div>`).join('');
 
