@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>아카데미컴퓨터아트학원 | 커리큘럼 안내</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #0D1B2A;
+      --blue: #1A56DB;
+      --blue-light: #EBF2FF;
+      --accent: #F97316;
+      --gray-100: #F8F9FA;
+      --gray-200: #E9ECEF;
+      --gray-400: #868E96;
+      --gray-600: #495057;
+      --gray-800: #212529;
+      --white: #FFFFFF;
+      --radius: 12px;
+      --shadow: 0 2px 16px rgba(0,0,0,0.08);
+    }
+
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      background: var(--gray-100);
+      color: var(--gray-800);
+      line-height: 1.6;
+    }
+
+    /* 헤더 */
+    header {
+      background: var(--navy);
+      padding: 0 24px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+    }
+    .header-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo {
+      color: var(--white);
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+    }
+    .logo span { color: var(--accent); }
+
+    /* 히어로 */
+    .hero {
+      background: linear-gradient(135deg, var(--navy) 0%, #1e3a5f 100%);
+      color: var(--white);
+      padding: 64px 24px 56px;
+      text-align: center;
+    }
+    .hero h1 {
+      font-size: clamp(24px, 5vw, 40px);
+      font-weight: 700;
+      letter-spacing: -1px;
+      margin-bottom: 12px;
+    }
+    .hero h1 span { color: var(--accent); }
+    .hero p {
+      font-size: 15px;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 32px;
+    }
+
+    /* 학과 탭 */
+    .tab-wrap {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+      padding: 0 16px;
+    }
+    .tab-btn {
+      background: rgba(255,255,255,0.12);
+      border: 1.5px solid rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.85);
+      padding: 8px 18px;
+      border-radius: 50px;
+      font-size: 14px;
+      font-family: 'Noto Sans KR', sans-serif;
+      cursor: pointer;
+      transition: all .2s;
+      font-weight: 400;
+    }
+    .tab-btn:hover { background: rgba(255,255,255,0.2); }
+    .tab-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: var(--white);
+      font-weight: 500;
+    }
+
+    /* 메인 콘텐츠 */
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* 섹션 타이틀 */
+    .section-title {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--blue);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .section-heading {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--gray-800);
+      margin-bottom: 24px;
+    }
+
+    /* 커리큘럼 카드 그리드 */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 28px rgba(0,0,0,0.12);
+    }
+    .card-header {
+      background: var(--blue);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .card-icon {
+      width: 36px;
+      height: 36px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .card-title { color: var(--white); font-size: 15px; font-weight: 700; }
+    .card-sub { color: rgba(255,255,255,0.75); font-size: 12px; margin-top: 2px; }
+    .card-body { padding: 18px 20px; }
+
+    .info-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--gray-200);
+      font-size: 14px;
+    }
+    .info-row:last-child { border-bottom: none; }
+    .info-label {
+      color: var(--gray-400);
+      font-size: 12px;
+      font-weight: 500;
+      min-width: 56px;
+      padding-top: 1px;
+    }
+    .info-value { color: var(--gray-800); flex: 1; }
+
+    .tag {
+      display: inline-block;
+      background: var(--blue-light);
+      color: var(--blue);
+      font-size: 11px;
+      font-weight: 500;
+      padding: 3px 10px;
+      border-radius: 50px;
+      margin: 2px;
+    }
+
+    /* 상담자료 섹션 */
+    .counsel-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .counsel-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 20px;
+      border-left: 4px solid var(--accent);
+    }
+    .counsel-dept {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--gray-800);
+      margin-bottom: 12px;
+    }
+    .counsel-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+    .counsel-label {
+      color: var(--gray-400);
+      min-width: 52px;
+      font-weight: 500;
+    }
+    .counsel-value { color: var(--gray-600); }
+
+    /* 로딩 & 에러 */
+    .loading {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--gray-400);
+    }
+    .loading-spinner {
+      width: 36px;
+      height: 36px;
+      border: 3px solid var(--gray-200);
+      border-top-color: var(--blue);
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+      margin: 0 auto 12px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .empty {
+      text-align: center;
+      padding: 48px 20px;
+      color: var(--gray-400);
+      background: var(--white);
+      border-radius: var(--radius);
+    }
+    .empty-icon { font-size: 36px; margin-bottom: 10px; }
+
+    /* 섹션 구분 */
+    .section { margin-bottom: 56px; }
+
+    /* 업데이트 일자 */
+    .update-badge {
+      display: inline-block;
+      background: var(--gray-200);
+      color: var(--gray-400);
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 50px;
+      margin-bottom: 20px;
+    }
+
+    /* 푸터 */
+    footer {
+      background: var(--navy);
+      color: rgba(255,255,255,0.5);
+      text-align: center;
+      padding: 28px 24px;
+      font-size: 13px;
+    }
+    footer strong { color: rgba(255,255,255,0.85); }
+
+    @media (max-width: 600px) {
+      .hero { padding: 48px 16px 44px; }
+      .card-grid, .counsel-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo">아카데미컴퓨터아트<span>학원</span></div>
+  </div>
+</header>
+
+<div class="hero">
+  <h1>학과별 <span>커리큘럼</span> 안내</h1>
+  <p>수원지점 | 최신 커리큘럼 및 상담 자료</p>
+  <div class="tab-wrap">
+    <button class="tab-btn active" onclick="filterDept('전체')">전체</button>
+    <button class="tab-btn" onclick="filterDept('AI학과')">AI학과</button>
+    <button class="tab-btn" onclick="filterDept('시각편집학과')">시각편집학과</button>
+    <button class="tab-btn" onclick="filterDept('CG영상학과')">CG영상학과</button>
+    <button class="tab-btn" onclick="filterDept('모션그래픽학과')">모션그래픽학과</button>
+    <button class="tab-btn" onclick="filterDept('인테리어학과')">인테리어학과</button>
+    <button class="tab-btn" onclick="filterDept('게임학과')">게임학과</button>
+  </div>
+</div>
+
+<main>
+
+  <!-- 커리큘럼 섹션 -->
+  <div class="section">
+    <div class="section-title">CURRICULUM</div>
+    <div class="section-heading">학과별 커리큘럼</div>
+    <div id="update-curriculum" class="update-badge">불러오는 중...</div>
+    <div id="curriculum-grid" class="card-grid">
+      <div class="loading">
+        <div class="loading-spinner"></div>
+        <div>데이터를 불러오는 중이에요...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 상담자료 섹션 -->
+  <div class="section">
+    <div class="section-title">COUNSELING</div>
+    <div class="section-heading">상담 자료</div>
+    <div id="counsel-grid" class="counsel-grid">
+      <div class="loading">
+        <div class="loading-spinner"></div>
+        <div>데이터를 불러오는 중이에요...</div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <strong>아카데미컴퓨터아트학원</strong> 수원지점<br>
+  커리큘럼 문의는 담당 강사에게 확인해주세요.
+</footer>
+
+<script>
+  // =============================================
+  // 구글 시트 ID (수정 금지)
+  // =============================================
+  const SHEET_ID = '1rWUtT4Vor8YZ0uTgUzH89Ke0QO640vC4aib8-Vy6K4Y';
+
+  const DEPT_ICONS = {
+    'AI학과': '🤖',
+    '시각편집학과': '🎨',
+    'CG영상학과': '🎬',
+    '모션그래픽학과': '✨',
+    '인테리어학과': '🏠',
+    '게임학과': '🎮',
+  };
+  const DEPT_COLORS = {
+    'AI학과': '#7C3AED',
+    '시각편집학과': '#DB2777',
+    'CG영상학과': '#DC2626',
+    '모션그래픽학과': '#D97706',
+    '인테리어학과': '#059669',
+    '게임학과': '#1A56DB',
+  };
+
+  let allCurriculum = [];
+  let allCounsel = [];
+
+  // 구글 시트 CSV로 불러오기
+  async function fetchSheet(gid) {
+    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${gid}`;
+    const res = await fetch(url);
+    const text = await res.text();
+    return parseCSV(text);
+  }
+
+  function parseCSV(text) {
+    const lines = text.trim().split('\n');
+    const headers = lines[0].split(',').map(h => h.replace(/"/g, '').trim());
+    return lines.slice(1).map(line => {
+      const vals = [];
+      let cur = '', inQ = false;
+      for (let ch of line) {
+        if (ch === '"') { inQ = !inQ; }
+        else if (ch === ',' && !inQ) { vals.push(cur.trim()); cur = ''; }
+        else cur += ch;
+      }
+      vals.push(cur.trim());
+      const obj = {};
+      headers.forEach((h, i) => obj[h] = (vals[i] || '').replace(/"/g, ''));
+      return obj;
+    }).filter(row => Object.values(row).some(v => v));
+  }
+
+  // 커리큘럼 카드 렌더링
+  function renderCurriculum(data) {
+    const grid = document.getElementById('curriculum-grid');
+    if (!data.length) {
+      grid.innerHTML = `<div class="empty"><div class="empty-icon">📋</div>아직 등록된 커리큘럼이 없어요.</div>`;
+      return;
+    }
+    grid.innerHTML = data.map(row => {
+      const dept = row['학과명'] || '';
+      const color = DEPT_COLORS[dept] || '#1A56DB';
+      const icon = DEPT_ICONS[dept] || '📚';
+      const content = row['커리큘럼내용'] || '';
+      const tags = content ? content.split(/[,·\n]/).map(t => t.trim()).filter(Boolean) : [];
+
+      return `
+        <div class="card" data-dept="${dept}">
+          <div class="card-header" style="background:${color}">
+            <div class="card-icon">${icon}</div>
+            <div>
+              <div class="card-title">${row['과정명'] || '-'}</div>
+              <div class="card-sub">${dept}</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="info-row">
+              <span class="info-label">강사</span>
+              <span class="info-value">${row['강사명'] || '-'}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">기간</span>
+              <span class="info-value">${row['수업기간'] || '-'}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">시간</span>
+              <span class="info-value">${row['수업시간'] || '-'}</span>
+            </div>
+            ${tags.length ? `
+            <div class="info-row">
+              <span class="info-label">내용</span>
+              <span class="info-value">${tags.map(t => `<span class="tag">${t}</span>`).join('')}</span>
+            </div>` : ''}
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  // 상담자료 카드 렌더링
+  function renderCounsel(data) {
+    const grid = document.getElementById('counsel-grid');
+    if (!data.length) {
+      grid.innerHTML = `<div class="empty"><div class="empty-icon">📄</div>아직 등록된 상담자료가 없어요.</div>`;
+      return;
+    }
+    grid.innerHTML = data.map(row => {
+      const dept = row['학과명'] || '';
+      return `
+        <div class="counsel-card" data-dept="${dept}">
+          <div class="counsel-dept">${DEPT_ICONS[dept] || '📚'} ${dept}</div>
+          <div class="counsel-row">
+            <span class="counsel-label">취업분야</span>
+            <span class="counsel-value">${row['취업분야'] || '확인 중'}</span>
+          </div>
+          <div class="counsel-row">
+            <span class="counsel-label">자격증</span>
+            <span class="counsel-value">${row['자격증'] || '확인 중'}</span>
+          </div>
+          <div class="counsel-row">
+            <span class="counsel-label">수강기간</span>
+            <span class="counsel-value">${row['수강기간'] || '확인 중'}</span>
+          </div>
+          <div class="counsel-row">
+            <span class="counsel-label">수강료</span>
+            <span class="counsel-value">${row['수강료'] || '문의'}</span>
+          </div>
+          ${row['특이사항'] ? `
+          <div class="counsel-row">
+            <span class="counsel-label">특이사항</span>
+            <span class="counsel-value">${row['특이사항']}</span>
+          </div>` : ''}
+        </div>`;
+    }).join('');
+  }
+
+  // 학과 필터
+  function filterDept(dept) {
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.textContent === dept);
+    });
+
+    document.querySelectorAll('#curriculum-grid .card').forEach(card => {
+      card.style.display = (dept === '전체' || card.dataset.dept === dept) ? 'block' : 'none';
+    });
+    document.querySelectorAll('#counsel-grid .counsel-card').forEach(card => {
+      card.style.display = (dept === '전체' || card.dataset.dept === dept) ? 'block' : 'none';
+    });
+  }
+
+  // 최초 데이터 로드
+  async function init() {
+    try {
+      // gid=0 은 첫 번째 탭(커리큘럼), gid=1 두 번째 탭(강사정보), gid=2 세 번째 탭(상담자료)
+      // 실제 gid는 시트 URL에서 확인 필요 — 기본값으로 0, 2 사용
+      const [curriculum, counsel] = await Promise.all([
+        fetchSheet(0),
+        fetchSheet(2),
+      ]);
+
+      allCurriculum = curriculum;
+      allCounsel = counsel;
+
+      // 업데이트 일자
+      const now = new Date();
+      const dateStr = `${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')} 기준`;
+      document.getElementById('update-curriculum').textContent = dateStr;
+
+      renderCurriculum(allCurriculum);
+      renderCounsel(allCounsel);
+
+    } catch (e) {
+      document.getElementById('curriculum-grid').innerHTML =
+        `<div class="empty"><div class="empty-icon">⚠️</div>데이터를 불러오지 못했어요.<br><small>구글 시트 공유 설정을 확인해주세요.</small></div>`;
+      document.getElementById('counsel-grid').innerHTML =
+        `<div class="empty"><div class="empty-icon">⚠️</div>데이터를 불러오지 못했어요.</div>`;
+    }
+  }
+
+  init();
+</script>
+</body>
+</html>
