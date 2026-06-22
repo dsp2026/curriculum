@@ -96,6 +96,14 @@
       font-weight: 400;
     }
     .tab-btn:hover { background: rgba(255,255,255,0.2); }
+    .tab-btn.roadmap-tab-btn {
+      background: rgba(249,115,22,0.2);
+      border-color: rgba(249,115,22,0.5);
+      color: #F97316;
+    }
+    .tab-btn.roadmap-tab-btn:hover {
+      background: rgba(249,115,22,0.35);
+    }
     .tab-btn.active {
       background: var(--accent);
       border-color: var(--accent);
@@ -381,9 +389,10 @@
 
 <div class="hero">
   <h1>학과별 <span>커리큘럼</span> 안내</h1>
-  <p>수원지점 | 최신 커리큘럼 및 상담 자료</p>
+  <p>종로지점 | 최신 커리큘럼 및 상담 자료</p>
   <div class="tab-wrap">
     <button class="tab-btn active" onclick="filterDept('전체')">전체</button>
+    <button class="tab-btn roadmap-tab-btn" onclick="scrollToRoadmap()">🗺️ 로드맵</button>
     <button class="tab-btn" onclick="filterDept('AI학과')">AI학과</button>
     <button class="tab-btn" onclick="filterDept('시각편집학과')">시각편집학과</button>
     <button class="tab-btn" onclick="filterDept('CG영상학과')">CG영상학과</button>
@@ -409,7 +418,7 @@
   </div>
 
   <!-- 로드맵 섹션 -->
-  <div class="section">
+  <div class="section" id="roadmap-section">
     <div class="section-title">ROADMAP</div>
     <div class="section-heading">학과별 수강 로드맵</div>
     <div id="roadmap-wrap">
@@ -629,6 +638,10 @@
     document.querySelectorAll('#roadmap-wrap .roadmap-dept').forEach(el => {
       el.style.display = (dept === '전체' || el.dataset.dept === dept) ? 'block' : 'none';
     });
+  }
+
+  function scrollToRoadmap() {
+    document.getElementById('roadmap-section').scrollIntoView({ behavior: 'smooth' });
   }
 
   // 최초 데이터 로드
